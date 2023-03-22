@@ -10,6 +10,10 @@
         padding: 0.5rem;
         border: 0.1rem solid $color-gray;
         border-radius: 0.5rem;
+
+        &.error {
+            border: 0.1rem solid red;
+        }
     }
 
     textarea {
@@ -20,6 +24,10 @@
         border-radius: 0.5rem;
         height: 5rem;
         @include smallScrollbar;
+
+        &.error {
+            border: 0.1rem solid red;
+        }
     }
 
     .createButtonWrapper {
