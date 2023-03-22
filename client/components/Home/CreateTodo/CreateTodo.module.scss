@@ -1,0 +1,42 @@
+@import "styles/main.module.scss";
+
+.createContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    input {
+        font-size: 1rem;
+        padding: 0.5rem;
+        border: 0.1rem solid $color-gray;
+        border-radius: 0.5rem;
+    }
+
+    textarea {
+        resize: none;
+        font-size: 1rem;
+        padding: 0.5rem;
+        border: 0.1rem solid $color-gray;
+        border-radius: 0.5rem;
+        height: 5rem;
+        @include smallScrollbar;
+    }
+
+    .createButtonWrapper {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+
+        .create,
+        .cancel {
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: green;
+            border-radius: 0.5rem;
+
+            &.cancel {
+                background-color: $color-gray;
+            }
+        }
+    }
+}

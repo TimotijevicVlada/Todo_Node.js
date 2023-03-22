@@ -3,9 +3,11 @@ const app = express();
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const todosRoute = require("./routes/todos");
+const cors = require('cors');
 
 dotenv.config();
 app.use(express.json());
+app.use(cors());   //I use this because of the CORS policy to enable http request work
 
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,

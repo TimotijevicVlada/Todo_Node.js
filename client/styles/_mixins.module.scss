@@ -1,0 +1,47 @@
+//MIXINS
+
+//Shared mixins for all pages and components
+
+@mixin centerElement {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin absoluteCenter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin smallScrollbar {
+    &::-webkit-scrollbar {
+        width: 0.4rem;
+        height: 0.4rem;
+        border-radius: 1.2rem;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: $color-black;
+        border-radius: 1.2rem;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $color-gray;
+        border-radius: 1.2rem;
+    }
+}
+
+/*RESPONSIVE BREAKPOINTS*/
+@mixin respond($breakpoint) {
+    @if $breakpoint == phone {
+        @media only screen and (max-width: 767px) {
+            @content;
+        }
+    }
+
+    @if $breakpoint == overPhone {
+        @media only screen and (min-width: 768px) {
+            @content;
+        }
+    }
+}

@@ -1,0 +1,42 @@
+@import "styles/main.module.scss";
+
+.container {
+    border: 0.1rem solid $color-gray;
+    border-radius: 1rem;
+    overflow: hidden;
+    width: 40rem;
+    height: 10rem;
+    display: grid;
+    grid-template-columns: 12rem 28rem;
+
+    .imageContainer {
+        background-color: $color-black;
+        @include centerElement;
+    }
+
+    .infoContainer {
+        padding: 0.7rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 0.5rem;
+
+        h4 {
+            text-align: center;
+        }
+
+        .description {
+            height: 100%;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+
+            .completed {
+                display: flex;
+                gap: 0.5rem;
+            }
+        }
+    }
+}
