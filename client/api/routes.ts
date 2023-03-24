@@ -3,5 +3,6 @@ export enum Routes {
     createTodo = "http://localhost:5000/server/createTodo",   //POST - title, description
     updateTodo = "http://localhost:5000/server/updateTodo",   //PUT - _id, title and description
     deleteTodo = "http://localhost:5000/server/deleteTodo",   //DELETE - _id
-    getSingleTodo = "http://localhost:5000/server/getSingleTodo"   //GET -  _id
+    getSingleTodo = "http://localhost:5000/server/getSingleTodo",   //GET -  _id
+    completeTodo = "http://localhost:5000/server/completeTodo",    //PUT - _id, completed
 }

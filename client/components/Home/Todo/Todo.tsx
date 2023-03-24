@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC } from 'react';
 import css from "./Todo.module.scss";
 import { useSnackbar } from 'notistack';
 
@@ -23,12 +23,6 @@ const Todo: FC<TodoProps> = ({ item }) => {
     const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
 
-    const [completed, setCompleted] = useState(false);
-
-    useEffect(() => {
-        setCompleted(item.completed);
-    }, [])
-
     const { mutate: deleteTodo } = useMutation({
         mutationFn: (data: { _id: string }) => axios.delete(Routes.deleteTodo, { data }),
         onSuccess: (data, variables) => {
@@ -42,11 +36,34 @@ const Todo: FC<TodoProps> = ({ item }) => {
         }
     })
 
+    const { mutate: completeTodo } = useMutation({
+        mutationFn: (data: { _id: string, completed: boolean }) => axios.put(Routes.completeTodo, data),
+        onSuccess: (data, variables) => {
+            queryClient.setQueryData("todos", (oldQueryData: any) =>
+                oldQueryData.map((item: Todo) => {
+                    if (item._id === variables._id) {
+                        item.completed = variables.completed;
+                        return item;
+                    }
+                    return item;
+                })
+            )
+        }
+    })
+
     const handleDelete = (id: string) => {
         const finalData = {
             _id: id
         }
         deleteTodo(finalData);
+    }
+
+    const handleComplete = () => {
+        const finalData = {
+            _id: item._id,
+            completed: item.completed ? false : true
+        }
+        completeTodo(finalData);
     }
 
     return (
@@ -73,19 +90,15 @@ const Todo: FC<TodoProps> = ({ item }) => {
                             Edit
                         </div>
                     </div>
-                    <div className={css.completed}>
+                    <div className={css.completed} onClick={handleComplete}>
                         <span>Completed</span>
-                        {completed ?
-                            <div
-                                className={css.checkedWrapper}
-                                onClick={() => setCompleted(false)}
+                        {item.completed ?
+                            <div className={css.checkedWrapper}
                             >
                                 <Checked />
                             </div>
                             :
-                            <div
-                                className={css.uncheckedWrapper}
-                                onClick={() => setCompleted(true)}
+                            <div className={css.uncheckedWrapper}
                             >
                                 <Unchecked />
                             </div>

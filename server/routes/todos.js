@@ -22,6 +22,16 @@ router.put("/updateTodo", async (req, res) => {
     }
 })
 
+//COMPLETE TODO
+router.put("/completeTodo", async (req, res) => {
+    try {
+        const completeTodo = await Todo.findByIdAndUpdate(req.body._id, { completed: req.body.completed }, { new: true })
+        res.status(200).json(completeTodo);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
 //DELETE TODO
 router.delete("/deleteTodo", async (req, res) => {
     try {
