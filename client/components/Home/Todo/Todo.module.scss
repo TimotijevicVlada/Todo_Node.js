@@ -32,10 +32,69 @@
         .footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+
+            .actionButtonsWrapper {
+                display: flex;
+                gap: 2rem;
+
+                .editWrapper {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    cursor: pointer;
+                    svg {
+                        width: 1.6rem;
+                        height: 1.6rem;
+                        path {
+                            fill: orange;
+                        }
+                    }
+                }
+
+                .deleteWrapper {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    cursor: pointer;
+                    svg {
+                        width: 2rem;
+                        height: 2rem;
+                        path {
+                            stroke: red;
+                        }
+                    }
+                }
+            }
 
             .completed {
                 display: flex;
+                align-items: center;
                 gap: 0.5rem;
+
+                .uncheckedWrapper {
+                    svg {
+                        width: 2rem;
+                        height: 2rem;
+                        cursor: pointer;
+
+                        path {
+                            stroke: $color-primary;
+                        }
+                    }
+                }
+
+                .checkedWrapper {
+                    svg {
+                        width: 2rem;
+                        height: 2rem;
+                        cursor: pointer;
+
+                        path {
+                            fill: $color-primary;
+                        }
+                    }
+                }
             }
         }
     }
