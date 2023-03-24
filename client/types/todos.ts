@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 
-interface Todo {
+export interface Todo {
     _id: string;
     title: string;
     description: string;

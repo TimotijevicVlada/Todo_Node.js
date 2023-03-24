@@ -10,7 +10,7 @@ const queryClient = new QueryClient();
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <SnackbarProvider preventDuplicate>
+      <SnackbarProvider maxSnack={3}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
