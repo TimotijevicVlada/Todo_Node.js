@@ -1,6 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import css from "./Todo.module.scss";
 import { useSnackbar } from 'notistack';
+
+//mui
+import { Collapse } from "@mui/material";
 
 //api
 import axios from 'axios';
@@ -23,6 +26,10 @@ const Todo: FC<TodoProps> = ({ item }) => {
     const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
 
+    const [mode, setMode] = useState("");
+    const [dataToEdit, setDataToEdit] = useState({ title: "", description: "" })
+    const [errors, setErrors] = useState({ title: false, description: false })
+
     const { mutate: deleteTodo } = useMutation({
         mutationFn: (data: { _id: string }) => axios.delete(Routes.deleteTodo, { data }),
         onSuccess: (data, variables) => {
@@ -33,6 +40,7 @@ const Todo: FC<TodoProps> = ({ item }) => {
                 variant: "success",
                 autoHideDuration: 3000
             });
+            setMode("");
         }
     })
 
@@ -51,6 +59,27 @@ const Todo: FC<TodoProps> = ({ item }) => {
         }
     })
 
+    const { mutate: editTodo } = useMutation({
+        mutationFn: (data: { _id: string, title: string, description: string }) => axios.put(Routes.updateTodo, data),
+        onSuccess: (data, variables) => {
+            queryClient.setQueryData("todos", (oldQueryData: any) =>
+                oldQueryData.map((item: Todo) => {
+                    if (item._id === variables._id) {
+                        item.title = variables.title;
+                        item.description = variables.description;
+                        return item;
+                    }
+                    return item;
+                })
+            )
+            enqueueSnackbar("Todo successfully edited", {
+                variant: "success",
+                autoHideDuration: 3000
+            });
+            setMode("");
+        }
+    })
+
     const handleDelete = (id: string) => {
         const finalData = {
             _id: id
@@ -66,47 +95,122 @@ const Todo: FC<TodoProps> = ({ item }) => {
         completeTodo(finalData);
     }
 
+    const handleEdit = () => {
+        if (checkErrors()) return;
+        const finalData = {
+            _id: item._id,
+            title: dataToEdit.title.trim(),
+            description: dataToEdit.description.trim()
+        }
+        editTodo(finalData);
+    }
+
+    const checkErrors = () => {
+        let tempErrors = {} as any;
+        if (!dataToEdit.title) tempErrors = { ...tempErrors, title: true }
+        if (!dataToEdit.description) tempErrors = { ...tempErrors, description: true }
+        setErrors(tempErrors);
+        return !!Object.values(tempErrors).length;
+    }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setDataToEdit(prev => ({ ...prev, [e.target.name]: e.target.value }))
+        if (e.target.name === "title" && e.target.value.trim()) setErrors(prev => ({ ...prev, title: false }))
+        if (e.target.name === "description" && e.target.value.trim()) setErrors(prev => ({ ...prev, description: false }))
+    }
+
     return (
-        <div className={css.container}>
-            <div className={css.imageContainer}>
-                image.jpg
-            </div>
-            <div className={css.infoContainer}>
-                <h4>{item.title}</h4>
-                <div className={css.description}>
-                    <p>{item.description}</p>
+        <>
+            <div className={css.container}>
+                <div className={css.imageContainer}>
+                    image.jpg
                 </div>
-                <div className={css.footer}>
-                    <div className={css.actionButtonsWrapper}>
-                        <div
-                            className={css.deleteWrapper}
+                <div className={css.infoContainer}>
+                    {mode === "edit" ?
+                        <input
+                            type="text"
+                            name='title'
+                            value={dataToEdit.title}
+                            className={`${css.editTitleInput} ${errors.title ? css.error : ""}`}
+                            onChange={handleChange}
+                        />
+                        :
+                        <h4>{item.title}</h4>
+                    }
+
+                    <div className={css.description}>
+                        {mode === "edit" ?
+                            <textarea
+                                name='description'
+                                value={dataToEdit.description}
+                                onChange={handleChange}
+                                className={errors.description ? css.error : ""}
+                            />
+                            :
+                            <p>{item.description}</p>
+                        }
+
+                    </div>
+                    <div className={css.footer}>
+                        <div className={css.actionButtonsWrapper}>
+                            <div
+                                className={css.deleteWrapper}
+                                onClick={() => setMode("delete")}
+                            >
+                                <Delete />
+                                Delete
+                            </div>
+                            <div
+                                className={css.editWrapper}
+                                onClick={() => {
+                                    setMode("edit")
+                                    setDataToEdit({ title: item.title, description: item.description })
+                                }}
+                            >
+                                <Edit />
+                                Edit
+                            </div>
+                        </div>
+                        <div className={css.completed} onClick={handleComplete}>
+                            <span>Completed</span>
+                            {item.completed ?
+                                <div className={css.checkedWrapper}
+                                >
+                                    <Checked />
+                                </div>
+                                :
+                                <div className={css.uncheckedWrapper}
+                                >
+                                    <Unchecked />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <Collapse in={mode !== ""}>
+                <div className={css.actionButtons}>
+                    <button onClick={() => setMode("")}>
+                        Cancel
+                    </button>
+                    {mode === "edit" ?
+                        <button
+                            className={css.confirmButton}
+                            onClick={handleEdit}
+                        >
+                            Save
+                        </button>
+                        :
+                        <button
+                            className={css.confirmButton}
                             onClick={() => handleDelete(item._id)}
                         >
-                            <Delete />
                             Delete
-                        </div>
-                        <div className={css.editWrapper}>
-                            <Edit />
-                            Edit
-                        </div>
-                    </div>
-                    <div className={css.completed} onClick={handleComplete}>
-                        <span>Completed</span>
-                        {item.completed ?
-                            <div className={css.checkedWrapper}
-                            >
-                                <Checked />
-                            </div>
-                            :
-                            <div className={css.uncheckedWrapper}
-                            >
-                                <Unchecked />
-                            </div>
-                        }
-                    </div>
+                        </button>
+                    }
                 </div>
-            </div>
-        </div>
+            </Collapse>
+        </>
     )
 }
 
