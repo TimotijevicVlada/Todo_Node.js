@@ -35,6 +35,7 @@ app.post("/server/upload", upload.single("file"), (req, res) => {
 //Routes to use
 app.use("/server", todosRoute)
 
+//If the process.env.PORT variable is not defined (for example, if you're running the server locally), it will default to port 5000.
 app.listen(process.env.PORT || 5000, () => {
-    console.log("Backend is running")
+    console.log(`Backend is running on port ${process.env.PORT || 5000}`)
 })

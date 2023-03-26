@@ -5,4 +5,5 @@ export enum Routes {
     deleteTodo = "http://localhost:5000/server/deleteTodo",   //DELETE - _id
     getSingleTodo = "http://localhost:5000/server/getSingleTodo",   //GET -  _id
     completeTodo = "http://localhost:5000/server/completeTodo",    //PUT - _id, completed
+    uploadImage = "http://localhost:5000/server/upload",    //POST - Form data
 }

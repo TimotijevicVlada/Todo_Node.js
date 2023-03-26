@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import css from "./Todo.module.scss";
 import { useSnackbar } from 'notistack';
+import Image from 'next/image';
 
 //mui
 import { Collapse } from "@mui/material";
@@ -22,6 +23,9 @@ import Edit from "svg/edit.svg";
 import { TodoProps, Todo } from '@/types/todos';
 
 const Todo: FC<TodoProps> = ({ item }) => {
+
+    //Public folder
+    const PF = "http://localhost:5000/images";
 
     const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
@@ -123,7 +127,14 @@ const Todo: FC<TodoProps> = ({ item }) => {
         <>
             <div className={css.container}>
                 <div className={css.imageContainer}>
-                    image.jpg
+                    {item.photo ?
+                        <img
+                            src={PF + item.photo}
+                            alt="image"
+                        />
+                        :
+                        <span>No image</span>
+                    }
                 </div>
                 <div className={css.infoContainer}>
                     {mode === "edit" ?

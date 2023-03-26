@@ -12,6 +12,10 @@ const TodoSchema = new mongoose.Schema({
     completed: {
         type: Boolean,
         default: false
+    },
+    photo: {
+        type: String,
+        required: false
     }
 },
     { timestamps: true }   //automatically gives you "created_at" and "updated_at" props

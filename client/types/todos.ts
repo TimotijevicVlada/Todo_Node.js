@@ -7,6 +7,7 @@ export interface Todo {
     created_at: string;
     updated_at: string;
     completed: boolean;
+    photo?: string;
 }
 
 export type TodosProps = Todo[];
@@ -18,6 +19,7 @@ export interface TodoProps {
 export interface CreateInputsProps {
     title: string;
     description: string;
+    photo?: string;
 }
 
 export interface CreateTodoProps {
