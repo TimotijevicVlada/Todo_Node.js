@@ -45,9 +45,6 @@ const CreateTodo: FC<CreateTodoProps> = ({ setCreateInputs }) => {
 
     const { mutate: uploadImage } = useMutation({
         mutationFn: (data: any) => axios.post(Routes.uploadImage, data),
-        onSuccess: (data, variables) => {
-            console.log("VAR", variables)
-        }
     })
 
     const handleSubmit = () => {

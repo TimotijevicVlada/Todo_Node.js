@@ -18,14 +18,22 @@ import Checked from "svg/checked.svg";
 import Unchecked from "svg/unchecked.svg";
 import Delete from "svg/delete.svg";
 import Edit from "svg/edit.svg";
+import UplaodIcon from "svg/upload.svg";
 
 //types
 import { TodoProps, Todo } from '@/types/todos';
 
+interface FinalDataProps {
+    _id: string;
+    title: string;
+    description: string;
+    photo?: string
+}
+
 const Todo: FC<TodoProps> = ({ item }) => {
 
     //Public folder
-    const PF = "http://localhost:5000/images";
+    const PF = "http://localhost:5000/images/";
 
     const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
@@ -33,6 +41,7 @@ const Todo: FC<TodoProps> = ({ item }) => {
     const [mode, setMode] = useState("");
     const [dataToEdit, setDataToEdit] = useState({ title: "", description: "" })
     const [errors, setErrors] = useState({ title: false, description: false })
+    const [file, setFile] = useState<any>(null);
 
     const { mutate: deleteTodo } = useMutation({
         mutationFn: (data: { _id: string }) => axios.delete(Routes.deleteTodo, { data }),
@@ -81,7 +90,12 @@ const Todo: FC<TodoProps> = ({ item }) => {
                 autoHideDuration: 3000
             });
             setMode("");
+            setFile(null);
         }
+    })
+
+    const { mutate: uploadImage } = useMutation({
+        mutationFn: (data: any) => axios.post(Routes.uploadImage, data),
     })
 
     const handleDelete = (id: string) => {
@@ -101,11 +115,20 @@ const Todo: FC<TodoProps> = ({ item }) => {
 
     const handleEdit = () => {
         if (checkErrors()) return;
-        const finalData = {
+        const finalData: FinalDataProps = {
             _id: item._id,
             title: dataToEdit.title.trim(),
             description: dataToEdit.description.trim()
         }
+        if (file) {
+            const data = new FormData();
+            const filename = file.name;
+            data.append("name", filename);
+            data.append("file", file);
+            finalData.photo = filename;
+            uploadImage(data);
+        }
+        console.log("FINAL DATA", finalData)
         editTodo(finalData);
     }
 
@@ -127,14 +150,25 @@ const Todo: FC<TodoProps> = ({ item }) => {
         <>
             <div className={css.container}>
                 <div className={css.imageContainer}>
-                    {item.photo ?
-                        <img
-                            src={PF + item.photo}
-                            alt="image"
-                        />
+                    {file ?
+                        <img src={URL.createObjectURL(file)} alt="image" />
                         :
-                        <span>No image</span>
+                        item.photo ?
+                            <img
+                                src={PF + item.photo}
+                                alt="image"
+                            />
+                            :
+                            <label htmlFor='uploadFile' className={css.uploadIcon}>
+                                <UplaodIcon />
+                            </label>
                     }
+                    <input
+                        type="file"
+                        style={{ display: "none" }}
+                        id="uploadFile"
+                        onChange={(e: any) => setFile(e.target.files[0])}
+                    />
                 </div>
                 <div className={css.infoContainer}>
                     {mode === "edit" ?

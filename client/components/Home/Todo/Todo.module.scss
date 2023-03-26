@@ -18,6 +18,18 @@
             height: 100%;
             object-fit: cover;
         }
+
+        .uploadIcon {
+            cursor: pointer;
+            svg {
+                width: 2rem;
+                height: 2rem;
+
+                path {
+                    fill: $color-gray;
+                }
+            }
+        }
     }
 
     .infoContainer {

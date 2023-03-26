@@ -5,10 +5,12 @@ const mongoose = require("mongoose");
 const todosRoute = require("./routes/todos");
 const multer = require("multer");
 const cors = require('cors');
+const path = require("path");
 
-dotenv.config();
-app.use(express.json());
+dotenv.config();   //The dotenv.config() method is used to load environment variables from a .env file into process.env in a Node.js application.
+app.use(express.json());   //The express.json() middleware function parsing the request body into a JavaScript object and attaching it to the req.body property. This makes it easy for developers to access the data and use it in their application logic.
 app.use(cors());   //I use this because of the CORS policy to enable http request work
+app.use("/images", express.static(path.join(__dirname, "/images")))  //we need this to use images from the "/images" folder
 
 //mongoose
 mongoose.connect(process.env.MONGO_URL, {
