@@ -48,12 +48,20 @@ const Home = () => {
                     setCreateInputs={setCreateInputs}
                 />
             </Collapse>
-            {data?.map((item, index) => (
-                <Todo
-                    key={index}
-                    item={item}
-                />
-            ))}
+            <div className={css.todosWrapper}>
+                {data?.length === 0 ?
+                    <div className={css.noTodos}>
+                        No todos yet.
+                    </div>
+                    :
+                    data?.map((item, index) => (
+                        <Todo
+                            key={index}
+                            item={item}
+                            index={index}
+                        />
+                    ))}
+            </div>
         </div>
     )
 }

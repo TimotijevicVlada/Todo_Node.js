@@ -21,16 +21,9 @@ import Edit from "svg/edit.svg";
 import UplaodIcon from "svg/upload.svg";
 
 //types
-import { TodoProps, Todo } from '@/types/todos';
+import { TodoProps, Todo, FinalDataProps } from '@/types/todos';
 
-interface FinalDataProps {
-    _id: string;
-    title: string;
-    description: string;
-    photo?: string
-}
-
-const Todo: FC<TodoProps> = ({ item }) => {
+const Todo: FC<TodoProps> = ({ item, index }) => {
 
     //Public folder
     const PF = "http://localhost:5000/images/";
@@ -73,13 +66,18 @@ const Todo: FC<TodoProps> = ({ item }) => {
     })
 
     const { mutate: editTodo } = useMutation({
-        mutationFn: (data: { _id: string, title: string, description: string }) => axios.put(Routes.updateTodo, data),
+        mutationFn: (data: FinalDataProps) => axios.put(Routes.updateTodo, data),
         onSuccess: (data, variables) => {
+            console.log("VARIABLES", variables)
             queryClient.setQueryData("todos", (oldQueryData: any) =>
                 oldQueryData.map((item: Todo) => {
                     if (item._id === variables._id) {
                         item.title = variables.title;
                         item.description = variables.description;
+                        if (variables.photo) {
+                            item.photo = variables.photo
+                            return item;
+                        }
                         return item;
                     }
                     return item;
@@ -94,6 +92,7 @@ const Todo: FC<TodoProps> = ({ item }) => {
         }
     })
 
+    //Function to upload image to the local file "/images"
     const { mutate: uploadImage } = useMutation({
         mutationFn: (data: any) => axios.post(Routes.uploadImage, data),
     })
@@ -128,7 +127,6 @@ const Todo: FC<TodoProps> = ({ item }) => {
             finalData.photo = filename;
             uploadImage(data);
         }
-        console.log("FINAL DATA", finalData)
         editTodo(finalData);
     }
 
@@ -159,15 +157,19 @@ const Todo: FC<TodoProps> = ({ item }) => {
                                 alt="image"
                             />
                             :
-                            <label htmlFor='uploadFile' className={css.uploadIcon}>
+                            <label htmlFor={`uploadFile${index}`} className={css.uploadIcon}>
                                 <UplaodIcon />
                             </label>
                     }
                     <input
                         type="file"
                         style={{ display: "none" }}
-                        id="uploadFile"
-                        onChange={(e: any) => setFile(e.target.files[0])}
+                        id={`uploadFile${index}`}
+                        onChange={(e: any) => {
+                            setFile(e.target.files[0])
+                            setMode("edit")
+                            setDataToEdit({ title: item.title, description: item.description })
+                        }}
                     />
                 </div>
                 <div className={css.infoContainer}>
@@ -235,7 +237,10 @@ const Todo: FC<TodoProps> = ({ item }) => {
             </div>
             <Collapse in={mode !== ""}>
                 <div className={css.actionButtons}>
-                    <button onClick={() => setMode("")}>
+                    <button onClick={() => {
+                        setMode("")
+                        setFile(null)
+                    }}>
                         Cancel
                     </button>
                     {mode === "edit" ?

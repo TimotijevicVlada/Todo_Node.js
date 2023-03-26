@@ -17,4 +17,16 @@
         border-radius: 0.6rem;
         font-size: 1.1rem;
     }
+
+    .todosWrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .noTodos {
+            text-align: center;
+            margin-top: 10rem;
+            font-size: 1.2rem;
+        }
+    }
 }

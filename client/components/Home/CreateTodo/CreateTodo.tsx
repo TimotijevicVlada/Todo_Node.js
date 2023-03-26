@@ -33,6 +33,7 @@ const CreateTodo: FC<CreateTodoProps> = ({ setCreateInputs }) => {
             );
             setCreateInputs(false);
             setInputs({ title: "", description: "" });
+            setFile(null);
             enqueueSnackbar("Todo successfully created", {
                 variant: "success",
                 autoHideDuration: 3000
