@@ -15,6 +15,7 @@ export type TodosProps = Todo[];
 export interface TodoProps {
     item: Todo;
     index: number;
+    completed: null | boolean;
 }
 
 export interface CreateInputsProps {
@@ -25,6 +26,7 @@ export interface CreateInputsProps {
 
 export interface CreateTodoProps {
     setCreateInputs: Dispatch<SetStateAction<boolean>>
+    completed: null | boolean;
 }
 
 export interface FinalDataProps {
@@ -32,4 +34,9 @@ export interface FinalDataProps {
     title: string;
     description: string;
     photo?: string
+}
+
+export interface FilterButtonsProps {
+    completed: null | boolean;
+    setCompleted: Dispatch<SetStateAction<null | boolean>>;
 }

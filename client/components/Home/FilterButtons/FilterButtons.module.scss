@@ -1,0 +1,21 @@
+@import "styles/main.module.scss";
+
+.filterButtonsWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+
+    button {
+        background-color: $color-gray;
+        padding: 1rem;
+        border-radius: 0.5rem;
+
+        &:hover {
+            background-color: $color-primary;
+        }
+
+        &.active {
+            background-color: $color-primary;
+        }
+    }
+}

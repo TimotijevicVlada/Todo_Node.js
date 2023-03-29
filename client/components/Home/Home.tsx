@@ -11,15 +11,19 @@ import { TodosProps } from '@/types/todos';
 
 //react query
 import { useQuery } from 'react-query';
+
+//components
 import Todo from './Todo/Todo';
 import CreateTodo from './CreateTodo/CreateTodo';
+import FilterButtons from './FilterButtons/FilterButtons';
 
 const Home = () => {
 
     const [createInputs, setCreateInputs] = useState(false);
+    const [completed, setCompleted] = useState<null | boolean>(null);
 
-    const { data, isLoading, isError } = useQuery<TodosProps>(['todos'], async () => {
-        const response = await axios.get(Routes.getTodos);
+    const { data, isLoading, isError } = useQuery<TodosProps>(['todos', completed], async () => {
+        const response = await axios.get(Routes.getTodos, { params: { completed: completed } },);
         return response.data;
     });
 
@@ -43,9 +47,14 @@ const Home = () => {
             >
                 Create new todo
             </button>
+            <FilterButtons
+                completed={completed}
+                setCompleted={setCompleted}
+            />
             <Collapse in={createInputs}>
                 <CreateTodo
                     setCreateInputs={setCreateInputs}
+                    completed={completed}
                 />
             </Collapse>
             <div className={css.todosWrapper}>
@@ -59,6 +68,7 @@ const Home = () => {
                             key={index}
                             item={item}
                             index={index}
+                            completed={completed}
                         />
                     ))}
             </div>

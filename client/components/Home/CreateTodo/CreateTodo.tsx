@@ -16,7 +16,7 @@ import { useMutation, useQueryClient } from 'react-query';
 //types
 import { CreateInputsProps, CreateTodoProps } from '@/types/todos';
 
-const CreateTodo: FC<CreateTodoProps> = ({ setCreateInputs }) => {
+const CreateTodo: FC<CreateTodoProps> = ({ setCreateInputs, completed }) => {
 
     const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
@@ -28,7 +28,7 @@ const CreateTodo: FC<CreateTodoProps> = ({ setCreateInputs }) => {
     const { mutate: createTodo } = useMutation({
         mutationFn: (data: CreateInputsProps) => axios.post(Routes.createTodo, data),
         onSuccess: (data, id) => {
-            queryClient.setQueryData("todos", (oldQueryData: any) =>
+            queryClient.setQueryData(["todos", completed], (oldQueryData: any) =>
                 [...oldQueryData, data.data]
             );
             setCreateInputs(false);

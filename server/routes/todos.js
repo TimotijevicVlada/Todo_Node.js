@@ -42,11 +42,17 @@ router.delete("/deleteTodo", async (req, res) => {
     }
 })
 
-//GET ALL TODOS
+//GET ALL TODOS (OR FILTERED BY COMPLETED/UNCOMPLETED)
 router.get("/getAllTodos", async (req, res) => {
+    const { completed } = req.query;
     try {
-        const getAllTodos = await Todo.find();
-        res.status(200).json(getAllTodos);
+        if (completed !== undefined) {
+            const completedTodos = await Todo.find({ completed: completed });
+            res.status(200).json(completedTodos);
+        } else {
+            const getAllTodos = await Todo.find();
+            res.status(200).json(getAllTodos);
+        }
     } catch (error) {
         res.status(500).json(error);
     }
