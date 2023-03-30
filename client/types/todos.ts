@@ -16,6 +16,7 @@ export interface TodoProps {
     item: Todo;
     index: number;
     completed: null | boolean;
+    search: string;
 }
 
 export interface CreateInputsProps {
@@ -27,6 +28,7 @@ export interface CreateInputsProps {
 export interface CreateTodoProps {
     setCreateInputs: Dispatch<SetStateAction<boolean>>
     completed: null | boolean;
+    search: string;
 }
 
 export interface FinalDataProps {

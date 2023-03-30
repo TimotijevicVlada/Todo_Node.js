@@ -23,7 +23,7 @@ import UplaodIcon from "svg/upload.svg";
 //types
 import { TodoProps, Todo, FinalDataProps } from '@/types/todos';
 
-const Todo: FC<TodoProps> = ({ item, index, completed }) => {
+const Todo: FC<TodoProps> = ({ item, index, completed, search }) => {
 
     //Public folder
     const PF = "http://localhost:5000/images/";
@@ -39,7 +39,7 @@ const Todo: FC<TodoProps> = ({ item, index, completed }) => {
     const { mutate: deleteTodo } = useMutation({
         mutationFn: (data: { _id: string }) => axios.delete(Routes.deleteTodo, { data }),
         onSuccess: (data, variables) => {
-            queryClient.setQueryData(["todos", completed], (oldQueryData: any) =>
+            queryClient.setQueryData(["todos", completed, search], (oldQueryData: any) =>
                 oldQueryData.filter((todo: Todo) => todo._id !== variables._id)
             )
             enqueueSnackbar("Todo deleted", {
@@ -53,7 +53,7 @@ const Todo: FC<TodoProps> = ({ item, index, completed }) => {
     const { mutate: completeTodo } = useMutation({
         mutationFn: (data: { _id: string, completed: boolean }) => axios.put(Routes.completeTodo, data),
         onSuccess: (data, variables) => {
-            queryClient.setQueryData(["todos", completed], (oldQueryData: any) =>
+            queryClient.setQueryData(["todos", completed, search], (oldQueryData: any) =>
                 oldQueryData.map((item: Todo) => {
                     if (item._id === variables._id) {
                         item.completed = variables.completed;
@@ -68,7 +68,7 @@ const Todo: FC<TodoProps> = ({ item, index, completed }) => {
     const { mutate: editTodo } = useMutation({
         mutationFn: (data: FinalDataProps) => axios.put(Routes.updateTodo, data),
         onSuccess: (data, variables) => {
-            queryClient.setQueryData(["todos", completed], (oldQueryData: any) =>
+            queryClient.setQueryData(["todos", completed, search], (oldQueryData: any) =>
                 oldQueryData.map((item: Todo) => {
                     if (item._id === variables._id) {
                         item.title = variables.title;

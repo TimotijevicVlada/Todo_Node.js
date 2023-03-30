@@ -18,6 +18,13 @@
         font-size: 1.1rem;
     }
 
+    .searchInput {
+        border: 0.1rem solid $color-gray;
+        border-radius: 0.5rem;
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+    }
+
     .todosWrapper {
         display: flex;
         flex-direction: column;

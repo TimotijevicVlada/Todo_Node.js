@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { Routes } from '@/api/routes';
 import css from "./Home.module.scss";
 import axios from 'axios';
+import { debounce } from "lodash";
 
 //mui
 import { Collapse } from "@mui/material";
@@ -21,11 +22,20 @@ const Home = () => {
 
     const [createInputs, setCreateInputs] = useState(false);
     const [completed, setCompleted] = useState<null | boolean>(null);
+    const [search, setSearch] = useState("");
 
-    const { data, isLoading, isError } = useQuery<TodosProps>(['todos', completed], async () => {
-        const response = await axios.get(Routes.getTodos, { params: { completed: completed } },);
+    const { data, isLoading, isError } = useQuery<TodosProps>(['todos', completed, search], async () => {
+        const response = await axios.get(Routes.getTodos, {
+            params: {
+                completed: completed,
+                title: search
+            }
+        },);
         return response.data;
     });
+
+    //I need to solve the problem with refreshing the page after writing in the input
+    const debounceSearch = debounce((e) => setSearch(e.target.value.trim()), 500);
 
     if (isLoading) {
         return (
@@ -51,10 +61,17 @@ const Home = () => {
                 completed={completed}
                 setCompleted={setCompleted}
             />
+            <input
+                type="text"
+                placeholder='Search by title'
+                className={css.searchInput}
+                onChange={debounceSearch}
+            />
             <Collapse in={createInputs}>
                 <CreateTodo
                     setCreateInputs={setCreateInputs}
                     completed={completed}
+                    search={search}
                 />
             </Collapse>
             <div className={css.todosWrapper}>
@@ -69,6 +86,7 @@ const Home = () => {
                             item={item}
                             index={index}
                             completed={completed}
+                            search={search}
                         />
                     ))}
             </div>

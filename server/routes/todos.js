@@ -42,17 +42,19 @@ router.delete("/deleteTodo", async (req, res) => {
     }
 })
 
-//GET ALL TODOS (OR FILTERED BY COMPLETED/UNCOMPLETED)
+//GET ALL TODOS (OR FILTERED BY COMPLETED/UNCOMPLETED OR SEARCHED BY TITLE)
 router.get("/getAllTodos", async (req, res) => {
-    const { completed } = req.query;
+    const { completed, title } = req.query;
     try {
-        if (completed !== undefined) {
-            const completedTodos = await Todo.find({ completed: completed });
-            res.status(200).json(completedTodos);
-        } else {
-            const getAllTodos = await Todo.find();
-            res.status(200).json(getAllTodos);
+        let query = {};
+        if (title) {
+            query.title = { $regex: title, $options: "i" };   // "i" means that it is case insensitive (no matter if it's uppercase or lowercase)
         }
+        if (completed !== undefined) {  //it can be true/false/undefined
+            query.completed = completed;
+        }
+        const getAllTodos = await Todo.find(query);
+        res.status(200).json(getAllTodos);
     } catch (error) {
         res.status(500).json(error);
     }
