@@ -1,7 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import css from "./Todo.module.scss";
 import { useSnackbar } from 'notistack';
-import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 //mui
 import { Collapse } from "@mui/material";
@@ -23,13 +23,15 @@ import UplaodIcon from "svg/upload.svg";
 //types
 import { TodoProps, Todo, FinalDataProps } from '@/types/todos';
 
-const Todo: FC<TodoProps> = ({ item, index, completed, search }) => {
+const Todo: FC<TodoProps> = ({ item, index, completed, search, type }) => {
 
     //Public folder
     const PF = "http://localhost:5000/images/";
 
+    const router = useRouter();
     const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
+    const isSingleTodo = useMemo(() => type === "singleTodo", [type]);
 
     const [mode, setMode] = useState("");
     const [dataToEdit, setDataToEdit] = useState({ title: "", description: "" })
@@ -62,6 +64,7 @@ const Todo: FC<TodoProps> = ({ item, index, completed, search }) => {
                     return item;
                 })
             )
+
         }
     })
 
@@ -143,9 +146,15 @@ const Todo: FC<TodoProps> = ({ item, index, completed, search }) => {
         if (e.target.name === "description" && e.target.value.trim()) setErrors(prev => ({ ...prev, description: false }))
     }
 
+    const handleRoute = () => {
+        if (!isSingleTodo) {
+            router.push(`todo/${item._id}`)
+        }
+    }
+
     return (
         <>
-            <div className={css.container}>
+            <div className={`${css.container} ${isSingleTodo ? css.singleContainer : ""}`}>
                 <div className={css.imageContainer}>
                     {file ?
                         <img src={URL.createObjectURL(file)} alt="image" />
@@ -154,6 +163,7 @@ const Todo: FC<TodoProps> = ({ item, index, completed, search }) => {
                             <img
                                 src={PF + item.photo}
                                 alt="image"
+                                onClick={handleRoute}
                             />
                             :
                             <label htmlFor={`uploadFile${index}`} className={css.uploadIcon}>

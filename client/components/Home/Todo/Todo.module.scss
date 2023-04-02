@@ -9,6 +9,11 @@
     display: grid;
     grid-template-columns: 12rem 28rem;
 
+    &.singleContainer {
+        width: 60rem;
+        grid-template-columns: 20rem 40rem;
+    }
+
     .imageContainer {
         background-color: $color-black;
         @include centerElement;
@@ -17,6 +22,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            cursor: pointer;
         }
 
         .uploadIcon {

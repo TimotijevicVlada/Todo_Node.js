@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState } from 'react';
 import { Routes } from '@/api/routes';
 import css from "./Home.module.scss";
 import axios from 'axios';
@@ -34,7 +34,6 @@ const Home = () => {
         return response.data;
     });
 
-    //I need to solve the problem with refreshing the page after writing in the input
     const debounceSearch = debounce((e) => setSearch(e.target.value.trim()), 500);
 
     if (isLoading) {

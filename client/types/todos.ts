@@ -14,9 +14,10 @@ export type TodosProps = Todo[];
 
 export interface TodoProps {
     item: Todo;
-    index: number;
-    completed: null | boolean;
-    search: string;
+    index?: number;
+    completed?: null | boolean;
+    search?: string;
+    type?: string;
 }
 
 export interface CreateInputsProps {

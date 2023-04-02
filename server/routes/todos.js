@@ -44,7 +44,7 @@ router.delete("/deleteTodo", async (req, res) => {
 
 //GET ALL TODOS (OR FILTERED BY COMPLETED/UNCOMPLETED OR SEARCHED BY TITLE)
 router.get("/getAllTodos", async (req, res) => {
-    const { completed, title } = req.query;
+    const { completed, title } = req.query;    //When it's "GET" method we can take the request props only by "req.query" not by "req.body"
     try {
         let query = {};
         if (title) {
@@ -62,8 +62,9 @@ router.get("/getAllTodos", async (req, res) => {
 
 //GET SINGLE TODO
 router.get("/getSingleTodo", async (req, res) => {
+    const { _id } = req.query;   //When it's "GET" method we can take the request props only by "req.query" not by "req.body"
     try {
-        const getTodo = await Todo.findById(req.body._id);
+        const getTodo = await Todo.findById(_id);
         res.status(200).json(getTodo);
     } catch (error) {
         res.status(500).json(error);
