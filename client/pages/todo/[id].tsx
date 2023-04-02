@@ -49,10 +49,12 @@ const SingleTodoPage = () => {
                     <ExitIcon /> Go back
                 </button>
             </div>
-            <Todo
-                item={todo}
-                type="singleTodo"
-            />
+            {todo &&
+                <Todo
+                    item={todo}
+                    type="singleTodo"
+                />
+            }
         </div>
     )
 }
