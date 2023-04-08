@@ -36,18 +36,6 @@ const Home = () => {
 
     const debounceSearch = debounce((e) => setSearch(e.target.value.trim()), 500);
 
-    if (isLoading) {
-        return (
-            <div className={css.loading}>Loading...</div>
-        )
-    }
-
-    if (isError) {
-        return (
-            <div className={css.error}>Something went wrong</div>
-        )
-    }
-
     return (
         <div className={css.container}>
             <button
@@ -74,20 +62,23 @@ const Home = () => {
                 />
             </Collapse>
             <div className={css.todosWrapper}>
-                {data?.length === 0 ?
-                    <div className={css.noTodos}>
-                        No todos yet.
-                    </div>
+                {isLoading ?
+                    <div className={css.loading}>Loading...</div>
                     :
-                    data?.map((item, index) => (
-                        <Todo
-                            key={index}
-                            item={item}
-                            index={index}
-                            completed={completed}
-                            search={search}
-                        />
-                    ))}
+                    data?.length === 0 ?
+                        <div className={css.noTodos}>
+                            No todos yet.
+                        </div>
+                        :
+                        data?.map((item, index) => (
+                            <Todo
+                                key={index}
+                                item={item}
+                                index={index}
+                                completed={completed}
+                                search={search}
+                            />
+                        ))}
             </div>
         </div>
     )

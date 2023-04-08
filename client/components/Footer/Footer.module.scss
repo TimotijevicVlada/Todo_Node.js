@@ -1,0 +1,8 @@
+@import "styles/main.module.scss";
+
+.footer {
+    width: 100%;
+    height: 4rem;
+    background-color: $color-black;
+    @include centerElement;
+}

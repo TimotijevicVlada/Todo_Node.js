@@ -10,6 +10,8 @@
     flex-direction: column;
     gap: 0.5rem;
     width: 40rem;
+    padding: 2rem 0;
+    min-height: calc(100vh - 8rem);
 
     .createNew {
         background-color: green;
@@ -28,7 +30,12 @@
     .todosWrapper {
         display: flex;
         flex-direction: column;
+        align-items: center;
         gap: 0.5rem;
+
+        .loading {
+            margin-top: 10rem;
+        }
 
         .noTodos {
             text-align: center;
