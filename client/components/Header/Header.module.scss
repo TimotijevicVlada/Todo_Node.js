@@ -17,4 +17,16 @@
             color: $color-primary;
         }
     }
+
+    .profile {
+        width: 2rem;
+        height: 2rem;
+        background-color: $color-primary;
+        @include centerElement;
+        border-radius: 50%;
+
+        span {
+            font-size: 1.2rem;
+        }
+    }
 }
