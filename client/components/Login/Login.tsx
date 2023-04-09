@@ -1,27 +1,73 @@
 import React from 'react';
 import css from "./Login.module.scss";
+import { useSnackbar } from 'notistack';
+import Cookies from 'js-cookie';
+
+//api
+import { Routes } from '@/api/routes';
+import { useMutation } from 'react-query';
+import axios from 'axios';
+
+//form
+import { useForm } from "react-hook-form";
+
+interface LoginFormProps {
+    username: string;
+    password: string;
+}
 
 const Login = () => {
+
+    const { enqueueSnackbar } = useSnackbar();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<LoginFormProps>();
+
+    const { mutate: loginUser, isError, isLoading, error }: any = useMutation({
+        mutationFn: (data: LoginFormProps) => axios.post(Routes.loginRoute, data),
+        onSuccess: (data, variables) => {
+            enqueueSnackbar("You are logged in", {
+                variant: "success",
+                autoHideDuration: 3000
+            });
+            reset();
+            Cookies.set('user', variables.username);
+        }
+    })
+
+    const onSubmit = (data: LoginFormProps) => {
+        loginUser(data);
+    };
+
     return (
         <div className={css.container}>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <h3 className={css.title}>Login</h3>
                 <div className={css.inputWrapper}>
                     <label>Username</label>
                     <input
                         type="text"
                         placeholder='Insert username'
+                        {...register("username", { required: true })}
                     />
+                    {errors.username && <span className={css.error}>Username is required</span>}
                 </div>
                 <div className={css.inputWrapper}>
                     <label>Password</label>
                     <input
                         type="text"
                         placeholder='Insert password'
+                        {...register("password", {
+                            required: true,
+                            minLength: 6
+                        })}
                     />
+                    {errors.password?.type === "required" && <span className={css.error}>Password is required</span>}
+                    {errors.password?.type === "minLength" && <span className={css.error}>Min 6 caracters</span>}
                 </div>
                 <div className={css.inputWrapper}>
                     <button type='submit'>Login</button>
+                    {isError &&
+                        <p className={`${css.error} ${css.mainError}`}>{error?.response?.data}</p>
+                    }
                 </div>
             </form>
         </div>

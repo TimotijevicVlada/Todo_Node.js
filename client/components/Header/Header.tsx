@@ -1,6 +1,7 @@
 import React from 'react';
 import css from "./Header.module.scss";
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 const Header = () => {
 

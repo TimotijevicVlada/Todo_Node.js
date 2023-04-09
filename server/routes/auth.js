@@ -34,10 +34,12 @@ router.post("/login", async (req, res) => {
         const user = await User.findOne({ username: req.body.username });  //first we need to find if that username exist in database
         if (!user) {
             res.status(400).json("Wrong credentials");
+            return;
         }
         const validated = await bcrypt.compare(req.body.password, user.password);
         if (!validated) {
             res.status(400).json("Wrong password");
+            return;
         }
         const { password, ...others } = user._doc; //we don't want to send password to the frontend (destructuring)
         res.status(200).json(others);
