@@ -6,4 +6,5 @@ export enum Routes {
     getSingleTodo = "http://localhost:5000/server/getSingleTodo",   //GET -  _id
     completeTodo = "http://localhost:5000/server/completeTodo",    //PUT - _id, completed
     uploadImage = "http://localhost:5000/server/upload",    //POST - Form data
+    registerRoute = "http://localhost:5000/server/register",   //POST - username, email, password
 }
