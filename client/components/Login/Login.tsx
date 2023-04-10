@@ -29,7 +29,7 @@ const Login = () => {
 
     const [loggedUser, setLoggedUser] = useAtom(userAtom);
 
-    const { mutate: loginUser, isError, isLoading, error }: any = useMutation({
+    const { mutate: loginUser, isError, error }: any = useMutation({
         mutationFn: (data: LoginFormProps) => axios.post(Routes.loginRoute, data),
         onSuccess: (data, variables) => {
             enqueueSnackbar("You are logged in", {
@@ -37,7 +37,7 @@ const Login = () => {
                 autoHideDuration: 3000
             });
             reset();
-            Cookies.set('user', variables.username);
+            Cookies.set('user', variables.username, { expires: 30 });   // 30 days after setting the cookies 
             setLoggedUser(variables.username);
             router.push("/");
         }
