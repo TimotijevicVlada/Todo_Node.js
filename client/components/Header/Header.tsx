@@ -3,6 +3,10 @@ import css from "./Header.module.scss";
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 
+//jotai
+import { useAtom } from 'jotai';
+import { userAtom } from '@/jotai/userAtom';
+
 //types
 import { HeaderProps } from '@/types/header';
 
@@ -10,7 +14,7 @@ const Header: FC<HeaderProps> = ({ user }) => {
 
     const router = useRouter();
 
-    const [loggedUser, setLoggedUser] = useState(false);
+    const [loggedUser, setLoggedUser] = useAtom(userAtom);
 
     const handleRouting = (route: string) => {
         router.push(route);
@@ -18,7 +22,7 @@ const Header: FC<HeaderProps> = ({ user }) => {
 
     useEffect(() => {
         if (user) {
-            setLoggedUser(true);
+            setLoggedUser(user);
         }
     }, [user])
 
@@ -32,15 +36,15 @@ const Header: FC<HeaderProps> = ({ user }) => {
             </span>
             {loggedUser ?
                 <>
-                    <span onClick={() => {
-                        Cookies.remove("user");
-                        setLoggedUser(false);
-                    }}>
-                        Logout
-                    </span>
                     <div className={css.profile}>
                         <span>{user?.charAt(0)}</span>
                     </div>
+                    <span onClick={() => {
+                        Cookies.remove("user");
+                        setLoggedUser(null);
+                    }}>
+                        Logout
+                    </span>
                 </>
                 :
                 <>

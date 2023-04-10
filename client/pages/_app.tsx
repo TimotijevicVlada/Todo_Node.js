@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from "react-query/devtools";
 import { SnackbarProvider } from "notistack";
+import { Provider } from "jotai";
 
 import Layout from '@/components/Layout/Layout'
 
@@ -12,9 +13,11 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <SnackbarProvider maxSnack={3}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <Provider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </Provider>
       </SnackbarProvider>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </QueryClientProvider>

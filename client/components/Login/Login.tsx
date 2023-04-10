@@ -2,6 +2,7 @@ import React from 'react';
 import css from "./Login.module.scss";
 import { useSnackbar } from 'notistack';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
 //api
 import { Routes } from '@/api/routes';
@@ -11,6 +12,10 @@ import axios from 'axios';
 //form
 import { useForm } from "react-hook-form";
 
+//jotai
+import { useAtom } from 'jotai';
+import { userAtom } from '@/jotai/userAtom';
+
 interface LoginFormProps {
     username: string;
     password: string;
@@ -18,8 +23,11 @@ interface LoginFormProps {
 
 const Login = () => {
 
+    const router = useRouter();
     const { enqueueSnackbar } = useSnackbar();
     const { register, handleSubmit, formState: { errors }, reset } = useForm<LoginFormProps>();
+
+    const [loggedUser, setLoggedUser] = useAtom(userAtom);
 
     const { mutate: loginUser, isError, isLoading, error }: any = useMutation({
         mutationFn: (data: LoginFormProps) => axios.post(Routes.loginRoute, data),
@@ -30,6 +38,8 @@ const Login = () => {
             });
             reset();
             Cookies.set('user', variables.username);
+            setLoggedUser(variables.username);
+            router.push("/");
         }
     })
 

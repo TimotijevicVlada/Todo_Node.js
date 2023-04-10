@@ -16,6 +16,10 @@
         &.active {
             color: $color-primary;
         }
+
+        &:hover {
+            color: $color-primary;
+        }
     }
 
     .profile {
@@ -27,6 +31,10 @@
 
         span {
             font-size: 1.2rem;
+
+            &:hover {
+                color: $color-white;
+            }
         }
     }
 }
