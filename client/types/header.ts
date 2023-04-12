@@ -1,3 +1,4 @@
 export interface HeaderProps {
-    user: string | undefined;
+    username: string | undefined;
+    userId: string | undefined;
 }

@@ -11,11 +11,15 @@ import { LayoutProps } from '@/types/layout';
 
 const Layout: FC<LayoutProps> = ({ children }) => {
 
-    const user = Cookies.get("user");
+    const username = Cookies.get("username");
+    const userId = Cookies.get("userId");
 
     return (
         <div className={css.container}>
-            <Header user={user}/>
+            <Header
+                username={username}
+                userId={userId}
+            />
             {children}
             <Footer />
         </div>

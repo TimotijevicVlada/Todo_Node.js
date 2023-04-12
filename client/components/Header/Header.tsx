@@ -11,7 +11,7 @@ import { userAtom } from '@/jotai/userAtom';
 //types
 import { HeaderProps } from '@/types/header';
 
-const Header: FC<HeaderProps> = ({ user }) => {
+const Header: FC<HeaderProps> = ({ username, userId }) => {
 
     const router = useRouter();
     const { enqueueSnackbar } = useSnackbar();
@@ -23,10 +23,10 @@ const Header: FC<HeaderProps> = ({ user }) => {
     }
 
     useEffect(() => {
-        if (user) {
-            setLoggedUser(user);
+        if (username) {
+            setLoggedUser(username);
         }
-    }, [user])
+    }, [username])
 
     return (
         <div className={css.container}>
@@ -38,12 +38,17 @@ const Header: FC<HeaderProps> = ({ user }) => {
             </span>
             {loggedUser ?
                 <>
-                    <div className={css.profile}>
-                        <span>{user?.charAt(0)}</span>
+                    <div
+                        className={css.profile}
+                        onClick={() => router.push(`/profile/${userId}`)}
+                    >
+                        <span>{username?.charAt(0)}</span>
                     </div>
                     <span onClick={() => {
-                        Cookies.remove("user");
+                        Cookies.remove("username");
+                        Cookies.remove("userId");
                         setLoggedUser(null);
+                        router.push("/login");
                         enqueueSnackbar("You are logged out", {
                             variant: "success",
                             autoHideDuration: 3000
