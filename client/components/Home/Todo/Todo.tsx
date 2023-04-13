@@ -25,8 +25,7 @@ import { TodoProps, Todo, FinalDataProps } from '@/types/todos';
 
 const Todo: FC<TodoProps> = ({ item, index, completed, search, type }) => {
 
-    //Public folder
-    const PF = "http://localhost:5000/images/";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
     const router = useRouter();
     const queryClient = useQueryClient();
@@ -161,7 +160,7 @@ const Todo: FC<TodoProps> = ({ item, index, completed, search, type }) => {
                         :
                         item.photo ?
                             <img
-                                src={PF + item.photo}
+                                src={baseUrl + item.photo}
                                 alt="image"
                                 onClick={handleRoute}
                             />

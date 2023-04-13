@@ -12,4 +12,14 @@ router.get("/user/get", async (req, res) => {
     }
 })
 
+//EDIT USER
+router.put("/user/update", async (req, res) => {
+    try {
+        const updatedProfile = await User.findByIdAndUpdate(req.body._id, { $set: req.body }, { new: true });
+        res.status(200).json(updatedProfile);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
 module.exports = router;

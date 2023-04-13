@@ -32,7 +32,6 @@ const Login = () => {
     const { mutate: loginUser, isError, error }: any = useMutation({
         mutationFn: (data: LoginFormProps) => axios.post(Routes.loginRoute, data),
         onSuccess: (data, variables) => {
-            console.log("data", data.data)
             enqueueSnackbar("You are logged in", {
                 variant: "success",
                 autoHideDuration: 3000

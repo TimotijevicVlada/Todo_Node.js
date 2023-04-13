@@ -1,6 +1,9 @@
 @import "styles/main.module.scss";
 
 .container {
+    min-height: calc(100vh - 8rem);
+    padding-top: 2rem;
+
     .header {
         display: flex;
         justify-content: center;
