@@ -49,6 +49,7 @@ const EditForm: FC<EditFormProps> = ({ editData, setEditData }) => {
                     placeholder='Type username'
                     {...register("username", { required: true })}
                 />
+                {errors.username && <div className={css.error}>Username is required</div>}
             </div>
             <div className={css.inputWrapper}>
                 <input
@@ -56,6 +57,7 @@ const EditForm: FC<EditFormProps> = ({ editData, setEditData }) => {
                     placeholder='Type email'
                     {...register("email", { required: true })}
                 />
+                {errors.email && <div className={css.error}>Email is required</div>}
             </div>
             <div className={css.inputWrapper}>
                 <input
@@ -63,6 +65,7 @@ const EditForm: FC<EditFormProps> = ({ editData, setEditData }) => {
                     placeholder='Type password'
                     {...register("password", { required: true })}
                 />
+                {errors.password && <div className={css.error}>Password is required</div>}
             </div>
             <div className={css.actionButtonsWrapper}>
                 <button onClick={() => setEditData(null)}>Cancel</button>

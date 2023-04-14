@@ -108,7 +108,7 @@ const Profile = () => {
                         <div className={css.profileInfo}>
                             <div>User: {user?.username}</div>
                             <div>Email: {user?.email}</div>
-                            <div>Created at: {user?.createdAt}</div>
+                            <div>Created at: {user?.createdAt && new Date(user.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</div>
                         </div>
                     }
                 </div>
