@@ -15,4 +15,5 @@ export enum Routes {
     //user
     getUser = "http://localhost:5000/server/user/get",    // GET - id(params)
     updateUser = "http://localhost:5000/server/user/update",   //PUT - all
+    deleteUser = "http://localhost:5000/server/user/delete",  //DELETE - id
 }
