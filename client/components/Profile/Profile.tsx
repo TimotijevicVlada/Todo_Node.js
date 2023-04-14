@@ -12,15 +12,11 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import User from "../../svg/user_holder.svg";
 import UplaodIcon from "svg/upload.svg";
 
-interface UserProps {
-    createdAt: string;
-    updatedAt: string;
-    email: string;
-    username: string;
-    password: string;
-    profilePicture: string;
-    _id: string;
-}
+//components
+import EditForm from './EditForm/EditForm';
+
+//types
+import { UserProps } from '@/types/profile';
 
 const Profile = () => {
 
@@ -35,6 +31,7 @@ const Profile = () => {
 
     const { data: user, isLoading, isError } = useQuery<UserProps>(["user", router.query.id], async ({ queryKey }: any) => {
         const id = queryKey[1];
+        if (!id) return;
         const response = await axios.get(Routes.getUser, {
             params: {
                 id: id
@@ -126,36 +123,10 @@ const Profile = () => {
                 <button onClick={() => user && setEditData(user)}>Edit profile</button>
             </div>
             {editData &&
-                <form className={css.formWrapper}>
-                    <div className={css.inputWrapper}>
-                        <input
-                            type="text"
-                            placeholder='Type username'
-                            value={editData.username}
-                            onChange={(e) => editData && setEditData((prev: any) => ({ ...prev, username: e.target.value }))}
-                        />
-                    </div>
-                    <div className={css.inputWrapper}>
-                        <input
-                            type="text"
-                            placeholder='Type email'
-                            value={editData.email}
-                            onChange={(e) => editData && setEditData((prev: any) => ({ ...prev, email: e.target.value }))}
-                        />
-                    </div>
-                    <div className={css.inputWrapper}>
-                        <input
-                            type="text"
-                            placeholder='Type password'
-                            value={editData.password}
-                            onChange={(e) => editData && setEditData((prev: any) => ({ ...prev, password: e.target.value }))}
-                        />
-                    </div>
-                    <div className={css.actionButtonsWrapper}>
-                        <button onClick={() => setEditData(null)}>Cancel</button>
-                        <button type='submit'>Edit</button>
-                    </div>
-                </form>
+                <EditForm
+                    editData={editData}
+                    setEditData={setEditData}
+                />
             }
         </div>
     )

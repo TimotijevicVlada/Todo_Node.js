@@ -1,0 +1,35 @@
+@import "styles/main.module.scss";
+
+.formWrapper {
+    width: 40rem;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .inputWrapper {
+        input {
+            border: 1px solid $color-gray;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 1rem;
+        }
+    }
+
+    .actionButtonsWrapper {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+
+        button {
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            &:first-child {
+                border: 0.1rem solid $color-primary;
+            }
+            &:last-child {
+                background-color: $color-primary;
+            }
+        }
+    }
+}
