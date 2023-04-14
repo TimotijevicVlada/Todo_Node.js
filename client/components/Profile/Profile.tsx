@@ -31,6 +31,7 @@ const Profile = () => {
     const router = useRouter();
 
     const [file, setFile] = useState<any>(null);
+    const [editData, setEditData] = useState<null | UserProps>(null);
 
     const { data: user, isLoading, isError } = useQuery<UserProps>(["user", router.query.id], async ({ queryKey }: any) => {
         const id = queryKey[1];
@@ -75,7 +76,7 @@ const Profile = () => {
     }
 
     return (
-        <>
+        <div>
             <div className={css.container}>
                 <div className={css.userWrapper}>
                     {file ?
@@ -121,7 +122,42 @@ const Profile = () => {
                     <button onClick={handleEdit}>Update</button>
                 </div>
             }
-        </>
+            <div className={css.editWrapper}>
+                <button onClick={() => user && setEditData(user)}>Edit profile</button>
+            </div>
+            {editData &&
+                <form className={css.formWrapper}>
+                    <div className={css.inputWrapper}>
+                        <input
+                            type="text"
+                            placeholder='Type username'
+                            value={editData.username}
+                            onChange={(e) => editData && setEditData((prev: any) => ({ ...prev, username: e.target.value }))}
+                        />
+                    </div>
+                    <div className={css.inputWrapper}>
+                        <input
+                            type="text"
+                            placeholder='Type email'
+                            value={editData.email}
+                            onChange={(e) => editData && setEditData((prev: any) => ({ ...prev, email: e.target.value }))}
+                        />
+                    </div>
+                    <div className={css.inputWrapper}>
+                        <input
+                            type="text"
+                            placeholder='Type password'
+                            value={editData.password}
+                            onChange={(e) => editData && setEditData((prev: any) => ({ ...prev, password: e.target.value }))}
+                        />
+                    </div>
+                    <div className={css.actionButtonsWrapper}>
+                        <button onClick={() => setEditData(null)}>Cancel</button>
+                        <button type='submit'>Edit</button>
+                    </div>
+                </form>
+            }
+        </div>
     )
 }
 
